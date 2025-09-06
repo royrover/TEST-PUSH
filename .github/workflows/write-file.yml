@@ -1,6 +1,47 @@
 name: Write & Push File
 
 on:
+  workflow_dispatch:   # ให้กดรันเองได้
+  schedule:
+    - cron: "0 * * * *"  # ตัวอย่าง: รันทุกชั่วโมง (UTC)
+
+permissions:
+  contents: write       # ให้สิทธิ์ Actions เขียนไฟล์ใน repo
+
+jobs:
+  write-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main           # ✅ บังคับใช้ branch main
+          persist-credentials: true  # ใช้ GITHUB_TOKEN อัตโนมัติ
+
+      # 2️⃣ Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # 3️⃣ Run Python script
+      - name: Run Python script
+        run: python write_file.py
+
+      # 4️⃣ Commit & push changes
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add -f output.txt
+          git commit -m "Auto-update output.txt $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          git pull --rebase origin main || true
+          git push
+name: Write & Push File
+
+on:
   workflow_dispatch:
   schedule:
     - cron: "0 * * * *"
