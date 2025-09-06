@@ -39,31 +39,5 @@ jobs:
           git commit -m "Auto-update output.txt $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
           git pull --rebase origin main || true
           git push
-name: Write & Push File
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 * * * *"
-
-permissions:
-  contents: write   # ✅ ให้สิทธิ์เขียนไฟล์ใน repo
-
-jobs:
-  write-file:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # ใช้ token ของ repo
-
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add .
-          git commit -m "Auto-update output.txt [skip ci]" || echo "No changes to commit"
-          git pull --rebase origin main || true
-          git push
 
