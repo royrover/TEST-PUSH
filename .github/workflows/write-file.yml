@@ -1,9 +1,9 @@
 name: Write & Push File
 
-on:
+#on:
   workflow_dispatch:   # ให้กดรันเองได้
   schedule:
-    - cron: "0 * * * *"  # ตัวอย่าง: รันทุกชั่วโมง (UTC)
+#    - cron: "0 * * * *"  # ตัวอย่าง: รันทุกชั่วโมง (UTC)
 
 permissions:
   contents: write       # ให้สิทธิ์ Actions เขียนไฟล์ใน repo
